@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Приёмник</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_exit">Выход</string>
+    <string name="frag_main_temp_label">Температура:</string>
+    <string name="msg_warn_wifi_disabled">Невозможно подключиться к передатчику.\nWiFi отключён.</string>
+    <string name="pref_cat_trm">Передатчик</string>
+    <string name="pref_trm_ssid_summary">Название беспроводной точки доступа передатчика</string>
+    <string name="pref_trm_pass_title">Пароль</string>
+    <string name="pref_trm_pass_summary">Пароль для подключения к передатчику</string>
+    <string name="activity_settings_label">Настройки</string>
+    <string name="msg_warn_no_trm_found">Передатчик не найден</string>
+    <string name="alert_dlg_location_perm_denied_title">Разрешение отклонено</string>
+    <string name="alert_dlg_location_perm_denied_msg">Доступ к местоположению устройства необходим для поиска передатчика. Без него приложение не может работать</string>
+    <string name="alert_dlg_exit">Выйти</string>
+    <string name="alert_dlg_repeat">Повторить</string>
+</resources>

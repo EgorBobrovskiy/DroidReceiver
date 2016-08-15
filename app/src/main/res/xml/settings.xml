@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pref_cat_trm" >
+        <EditTextPreference
+            android:title="@string/pref_trm_ssid_title"
+            android:summary="@string/pref_trm_ssid_summary"
+            android:key="prefTrmSsid"
+            android:defaultValue="SSID" />
+        <EditTextPreference
+            android:title="@string/pref_trm_pass_title"
+            android:summary="@string/pref_trm_pass_summary"
+            android:key="prefTrmPass"
+            android:defaultValue="PASS" />
+    </PreferenceCategory>
+</PreferenceScreen>
