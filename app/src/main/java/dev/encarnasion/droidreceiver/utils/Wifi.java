@@ -1,17 +1,17 @@
 package dev.encarnasion.droidreceiver.utils;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
 import com.google.common.collect.Iterables;
+
+import java.util.List;
 
 import dev.encarnasion.droidreceiver.Globals;
 import dev.encarnasion.droidreceiver.R;
@@ -41,19 +41,36 @@ public class Wifi {
 
     protected static void checkTrmConnection(View view) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(view.getContext());
-        String prefSSID = preferences.getString("prefTrmSsid", "");
+        String prefSSID = preferences.getString(view.getContext().getString(R.string.pref_key_trm_ssid), "");
         String formattedPrefSSID = String.format("\"%s\"", prefSSID);
 
         if (!formattedPrefSSID.equals(getCurrentSSID())) {
-            Log.d(TAG, String.format("scan results(%d)", _wifiManager.getScanResults().size()));
-            for (ScanResult sr : _wifiManager.getScanResults()) {
+            List<ScanResult> scanResultList = _wifiManager.getScanResults();
+            Log.d(TAG, String.format("\n\nscan results(%d)", scanResultList.size()));
+            for (ScanResult sr : scanResultList) {
                 Log.d(TAG, "\t" + sr.SSID);
             }
-            if (Iterables.any(_wifiManager.getScanResults(), sr -> sr.SSID.equals(prefSSID))) {
-                ScanResult scanResult = Iterables.find(_wifiManager.getScanResults(), sr -> sr.SSID.equals(prefSSID));
-                Log.d(TAG, scanResult.SSID);
-            } else {
+            ScanResult scanResult = Iterables.tryFind(scanResultList, sr -> sr.SSID.equals(prefSSID)).orNull();
+            if (scanResult == null) {
                 Notifications.ShowSnackbar(view, R.string.msg_warn_no_trm_found);
+            } else {
+                Log.d(TAG, "Access point found: " + scanResult.SSID);
+
+                WifiConfiguration conf = Iterables.tryFind(_wifiManager.getConfiguredNetworks(), cn -> cn.SSID.equals(formattedPrefSSID)).orNull();
+                String preSharedKey = String.format("\"%s\"", preferences.getString(view.getContext().getString(R.string.pref_key_trm_pass), ""));
+                if (conf == null) {
+                    conf = new WifiConfiguration();
+                    conf.SSID = formattedPrefSSID;
+                    conf.preSharedKey = preSharedKey;
+                    _wifiManager.addNetwork(conf);
+                } else if (!conf.preSharedKey.equals(preSharedKey)) {
+                    conf.preSharedKey = preSharedKey;
+                    _wifiManager.saveConfiguration();
+                }
+
+                _wifiManager.disconnect();
+                _wifiManager.enableNetwork(conf.networkId, true);
+                _wifiManager.reconnect();
             }
         }
     }

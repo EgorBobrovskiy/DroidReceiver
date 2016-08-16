@@ -15,4 +15,6 @@
     <string name="alert_dlg_location_perm_denied_msg">Access to device location is needed to find transmitter. Without it app cannot work properly</string>
     <string name="alert_dlg_exit">Exit</string>
     <string name="alert_dlg_repeat">Repeat</string>
+    <string name="pref_key_trm_ssid" translatable="false">prefTrmSsid</string>
+    <string name="pref_key_trm_pass" translatable="false">prefTrmPass</string>
 </resources>

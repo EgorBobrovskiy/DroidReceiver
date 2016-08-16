@@ -5,12 +5,12 @@
         <EditTextPreference
             android:title="@string/pref_trm_ssid_title"
             android:summary="@string/pref_trm_ssid_summary"
-            android:key="prefTrmSsid"
-            android:defaultValue="SSID" />
+            android:key="@string/pref_key_trm_ssid"
+            android:defaultValue="" />
         <EditTextPreference
             android:title="@string/pref_trm_pass_title"
             android:summary="@string/pref_trm_pass_summary"
-            android:key="prefTrmPass"
-            android:defaultValue="PASS" />
+            android:key="@string/pref_key_trm_pass"
+            android:defaultValue="" />
     </PreferenceCategory>
 </PreferenceScreen>
