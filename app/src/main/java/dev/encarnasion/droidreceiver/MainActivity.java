@@ -1,8 +1,6 @@
 package dev.encarnasion.droidreceiver;
 
 import android.Manifest;
-import android.app.Application;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -42,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(Wifi::connectToTransmitter);
         Animators.put(Animators.K.FAB_CONNECT_TRANSMITTER, new FloatingActionButtonAnimator(fab));
+        if (Wifi.isConnectedToTrm()) fab.hide();
+        else fab.show();
 
         // test incoming temperature
         Random random = new Random();

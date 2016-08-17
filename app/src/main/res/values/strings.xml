@@ -17,4 +17,6 @@
     <string name="alert_dlg_repeat">Repeat</string>
     <string name="pref_key_trm_ssid" translatable="false">prefTrmSsid</string>
     <string name="pref_key_trm_pass" translatable="false">prefTrmPass</string>
+    <string name="msg_warn_invalid_ssid">Transmitter\'s SSID cannot be empty or longer than 32 characters.</string>
+    <string name="msg_warn_invalid_psk">Transmitter\'s password length should be 8 up to 63 characters.</string>
 </resources>

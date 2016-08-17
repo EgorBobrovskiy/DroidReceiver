@@ -9,8 +9,8 @@ import dev.encarnasion.droidreceiver.animators.FloatingActionButtonAnimator;
 public class Notifications {
     public static void ShowSnackbar(View view, int resId) {
         FloatingActionButtonAnimator fab = (FloatingActionButtonAnimator) Animators.get(Animators.K.FAB_CONNECT_TRANSMITTER);
-        boolean fabIsShown = fab.get().isShown();
-        if (fabIsShown) fab.hide();
+        boolean fabIsShown = fab.isShown();
+        fab.hide();
         Snackbar.make(view, resId, Snackbar.LENGTH_SHORT)
                 .setCallback(new Snackbar.Callback() {
                     @Override

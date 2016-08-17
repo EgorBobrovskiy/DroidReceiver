@@ -7,7 +7,7 @@ import android.view.animation.AnimationUtils;
 
 import dev.encarnasion.droidreceiver.Globals;
 
-public class FloatingActionButtonAnimator implements ControlAnimator {
+public class FloatingActionButtonAnimator extends ControlAnimator {
     private FloatingActionButton floatingActionButton;
     private Animation inAnimation;
     private Animation outAnimation;
@@ -18,7 +18,7 @@ public class FloatingActionButtonAnimator implements ControlAnimator {
     }
 
     protected void setAnimation() {
-        inAnimation = AnimationUtils.makeInAnimation(Globals.getContext(), false);
+        inAnimation = AnimationUtils.makeInAnimation(Globals.C(), false);
         inAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -32,7 +32,7 @@ public class FloatingActionButtonAnimator implements ControlAnimator {
             public void onAnimationRepeat(Animation animation) { }
         });
 
-        outAnimation = AnimationUtils.makeOutAnimation(Globals.getContext(), true);
+        outAnimation = AnimationUtils.makeOutAnimation(Globals.C(), true);
         outAnimation.setDuration(100);
         outAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -60,7 +60,8 @@ public class FloatingActionButtonAnimator implements ControlAnimator {
         }
     }
 
-    public FloatingActionButton get() {
-        return floatingActionButton;
+    @Override
+    public boolean isShown() {
+        return floatingActionButton.isShown();
     }
 }

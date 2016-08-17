@@ -15,4 +15,6 @@
     <string name="alert_dlg_location_perm_denied_msg">Доступ к местоположению устройства необходим для поиска передатчика. Без него приложение не может работать</string>
     <string name="alert_dlg_exit">Выйти</string>
     <string name="alert_dlg_repeat">Повторить</string>
+    <string name="msg_warn_invalid_ssid">SSID передатчика не может быть пустым или длиннее 32 символов.</string>
+    <string name="msg_warn_invalid_psk">Пароль передатчика должен быть от 8 до 63 символов.</string>
 </resources>

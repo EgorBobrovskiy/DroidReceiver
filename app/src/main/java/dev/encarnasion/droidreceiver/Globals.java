@@ -18,5 +18,5 @@ public class Globals extends Application {
         Wifi.init();
     }
 
-    public static Context getContext() { return _context; }
+    public static Context C() { return _context; }
 }
