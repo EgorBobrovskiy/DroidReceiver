@@ -17,4 +17,6 @@
     <string name="alert_dlg_repeat">Повторить</string>
     <string name="msg_warn_invalid_ssid">SSID передатчика не может быть пустым или длиннее 32 символов.</string>
     <string name="msg_warn_invalid_psk">Пароль передатчика должен быть от 8 до 63 символов.</string>
+    <string name="msg_trm_connected">Передатчик подключён</string>
+    <string name="msg_trm_disconnected">Передатчик отключён</string>
 </resources>

@@ -1,10 +1,18 @@
 package dev.encarnasion.droidreceiver;
 
 import android.Manifest;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -22,8 +30,45 @@ import java.util.TimerTask;
 import dev.encarnasion.droidreceiver.animators.Animators;
 import dev.encarnasion.droidreceiver.animators.FloatingActionButtonAnimator;
 import dev.encarnasion.droidreceiver.utils.Wifi;
+import dev.encarnasion.droidreceiver.utils.WifiListenerService;
 
 public class MainActivity extends AppCompatActivity {
+    protected class IncomingWifiHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+    }
+
+    protected final Messenger rMessenger = new Messenger(new IncomingWifiHandler());
+    protected Messenger tMessenger = null;
+    protected boolean tBound = false;
+
+    private ServiceConnection _wifiServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            tMessenger = new Messenger(iBinder);
+            tBound = true;
+            try {
+                Message answer = new Message();
+                answer.what = WifiListenerService.MSG_IN_REG_MESSENGER;
+                answer.arg1 = hashCode();
+                answer.replyTo = rMessenger;
+                tMessenger.send(answer);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            tMessenger = null;
+            tBound = false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +79,19 @@ public class MainActivity extends AppCompatActivity {
 
         checkAppRequests();
         setActions();
+        bindWifiService();
+    }
+
+    @Override
+    protected void onResume() {
+        Wifi.connectToTransmitter(null);
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbindWifiService();
+        super.onDestroy();
     }
 
     protected void setActions() {
@@ -57,11 +115,26 @@ public class MainActivity extends AppCompatActivity {
         }, 0, 10 * 1000);
     }
 
-    private void checkAppRequests() {
-        // android M can't find access points without special permission
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, Globals.REQUEST_PERM_COARSE_LOCATION);
+    private void bindWifiService() {
+        if (!tBound) {
+            bindService(new Intent(this, WifiListenerService.class), _wifiServiceConnection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    private void unbindWifiService() {
+        if (tBound) {
+            if (tMessenger != null) {
+                try {
+                    Message msg = new Message();
+                    msg.what = WifiListenerService.MSG_IN_UNREG_MESSENGER;
+                    msg.arg1 = hashCode();
+                    tMessenger.send(msg);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+            unbindService(_wifiServiceConnection);
+            tBound = false;
         }
     }
 
@@ -89,6 +162,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void checkAppRequests() {
+        // android M can't find access points without special permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, Globals.REQUEST_PERM_COARSE_LOCATION);
+        }
     }
 
     @Override

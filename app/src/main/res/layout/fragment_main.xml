@@ -1,75 +1,77 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context="dev.encarnasion.droidreceiver.MainActivityFragment"
-                tools:showIn="@layout/activity_main">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_alignParentStart="true"
+              android:layout_alignTop="@+id/textClock"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/activity_vertical_margin"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/activity_vertical_margin"
+              tools:context="dev.encarnasion.droidreceiver.MainActivityFragment"
+              tools:showIn="@layout/activity_main"
+              android:id="@+id/fragmentMainLayout">
 
     <TextClock
+        android:id="@+id/textClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textClock"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
         android:textColor="@color/colorAccent"
         android:textSize="60sp"
-        android:visibility="visible" />
+        android:visibility="visible"/>
 
     <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textClock"
-        android:padding="10dp">
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/frag_main_temp_label"
-            android:textColor="@color/bright_foreground_disabled_material_dark"
-            android:textSize="15sp"
-            android:textIsSelectable="false"
-            android:layout_row="0"
             android:layout_column="0"
-            android:textAlignment="textStart"
+            android:layout_row="0"
             android:focusable="false"
             android:inputType="none"
-            android:singleLine="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="+24.3"
-            android:id="@+id/temperatureLabel"
-            android:layout_row="0"
-            android:layout_column="1"
-            android:layout_gravity="right"
-            android:textAlignment="gravity"
-            android:layout_columnWeight="100"
-            android:textColor="@color/bright_foreground_material_dark"
-            android:textSize="50sp"
             android:singleLine="true"
-            android:textIsSelectable="false" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="\u00b0C"
-            android:layout_row="0"
-            android:layout_column="2"
-            android:textAlignment="gravity"
-            android:textColor="@color/bright_foreground_material_dark"
-            android:textSize="50sp"
+            android:text="@string/frag_main_temp_label"
+            android:textAlignment="textStart"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/bright_foreground_disabled_material_dark"
             android:textIsSelectable="false"
-            android:singleLine="true"
-            android:layout_gravity="right" />
-    </GridLayout>
+            android:textSize="15sp"/>
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/temperatureLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_columnWeight="100"
+            android:layout_gravity="end"
+            android:layout_row="0"
+            android:singleLine="true"
+            android:text="+24.3"
+            android:textAlignment="gravity"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bright_foreground_material_dark"
+            android:textIsSelectable="false"
+            android:textSize="50sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_gravity="end"
+            android:layout_row="0"
+            android:singleLine="true"
+            android:text="@string/degree_celsium"
+            android:textAlignment="gravity"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bright_foreground_material_dark"
+            android:textIsSelectable="false"
+            android:textSize="50sp"/>
+
+    </GridLayout>
+</LinearLayout>

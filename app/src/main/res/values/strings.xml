@@ -19,4 +19,7 @@
     <string name="pref_key_trm_pass" translatable="false">prefTrmPass</string>
     <string name="msg_warn_invalid_ssid">Transmitter\'s SSID cannot be empty or longer than 32 characters.</string>
     <string name="msg_warn_invalid_psk">Transmitter\'s password length should be 8 up to 63 characters.</string>
+    <string name="degree_celsium" translatable="false">\u00b0C</string>
+    <string name="msg_trm_connected">Connected to transmitter</string>
+    <string name="msg_trm_disconnected">Disconnected from transmitter</string>
 </resources>

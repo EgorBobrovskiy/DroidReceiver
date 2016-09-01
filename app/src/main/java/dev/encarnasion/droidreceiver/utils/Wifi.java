@@ -48,30 +48,31 @@ public class Wifi {
 
     public static void connectToTransmitter(View view) {
         if (_wifiManager.isWifiEnabled()) {
-            checkTrmConnection(view);
+            checkTrmConnection();
         } else {
-            Notifications.ShowSnackbar(view, R.string.msg_warn_wifi_disabled);
+            Notifications.toast(R.string.msg_warn_wifi_disabled);
         }
     }
 
-    protected static void checkTrmConnection(View view) {
+    protected static void checkTrmConnection() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Globals.C());
         String prefSSID = preferences.getString(Globals.C().getString(R.string.pref_key_trm_ssid), "");
         String formattedSSID = String.format("\"%s\"", prefSSID);
 
         if (prefSSID.equals("") || prefSSID.length() > 32) {
-            Notifications.ShowSnackbar(view, R.string.msg_warn_invalid_ssid);
+            Notifications.toast(R.string.msg_warn_invalid_ssid);
             return;
         }
 
         if (formattedSSID.equals(getCurrentSSID())) {
             Animators.get(Animators.K.FAB_CONNECT_TRANSMITTER).hide();
+            Notifications.toast(R.string.msg_trm_connected);
             return;
         }
 
         String prefPSK = preferences.getString(Globals.C().getString(R.string.pref_key_trm_pass), "");
         if (prefPSK.length() < 8 || prefPSK.length() > 63) {
-            Notifications.ShowSnackbar(view, R.string.msg_warn_invalid_psk);
+            Notifications.toast(R.string.msg_warn_invalid_psk);
             return;
         }
 
@@ -84,7 +85,7 @@ public class Wifi {
 
         ScanResult scanResult = Iterables.tryFind(scanResultList, sr -> sr.SSID.equals(prefSSID)).orNull();
         if (scanResult == null) {
-            Notifications.ShowSnackbar(view, R.string.msg_warn_no_trm_found);
+            Notifications.toast(R.string.msg_warn_no_trm_found);
             return;
         }
 
@@ -136,18 +137,21 @@ public class Wifi {
             if (action.equals(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION)) {
                 ControlAnimator ca = Animators.get(Animators.K.FAB_CONNECT_TRANSMITTER);
                 if (intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, 0) == WifiManager.ERROR_AUTHENTICATING) {
+                    Notifications.toast("Error authenticating");
                     Log.d(TAG, "Error authenticating");
-                    ca.show();
+                    if (ca != null) ca.show();
                     return;
                 }
 
                 SupplicantState supState = intent.getParcelableExtra(WifiManager.EXTRA_NEW_STATE);
                 if (supState == null) return;
 
-                if (supState.equals(SupplicantState.COMPLETED)) {
-                    ca.hide();
+                if (supState.equals(SupplicantState.COMPLETED) && isConnectedToTrm()) {
+                    if (ca != null) ca.hide();
+                    Notifications.toast(R.string.msg_trm_connected);
                 } else if (supState.equals(SupplicantState.DISCONNECTED)) {
-                    ca.show();
+                    Notifications.toast(R.string.msg_trm_disconnected);
+                    if (ca != null) ca.show();
                 }
             }
         }
